@@ -3,7 +3,7 @@ export const siteConfig = {
   title: "Junior Software Developer",
   description:
     "Portfolio of Marcos López, a junior software developer focused on backend development, system architecture, and open-source technologies.",
-  accentColor: "#0a5a16d0",
+  accentColor: "#e24b14d0",
 
   social: {
     email: "marcosloport@gmail.com",
