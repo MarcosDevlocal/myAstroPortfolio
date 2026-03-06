@@ -8,7 +8,7 @@ export const siteConfig = {
   social: {
     email: "marcosloport@gmail.com",
     linkedin: "https://www.linkedin.com/in/marcos-l%C3%B3pez-ortego-537736218/",
-    twitter: "https://x.com/rfitzio",
+    twitter: "",
     github: "https://github.com/MarcosDevLocal",
   },
 
