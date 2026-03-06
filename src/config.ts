@@ -1,9 +1,10 @@
 export const siteConfig = {
   name: "Marcos López Ortego",
-  title: "Junior Software Developer",
+  title: "Backend Software Developer",
   description:
-    "Portfolio of Marcos López, a junior software developer focused on backend development, system architecture, and open-source technologies.",
-  accentColor: "#e24b14d0",
+    "Backend-focused software developer passionate about building reliable systems, APIs, and scalable applications. Experienced with Java, Spring Boot, .NET, and Linux-based environments.",
+
+  accentColor: "#e28c14d0",
 
   social: {
     email: "marcosloport@gmail.com",
@@ -13,42 +14,45 @@ export const siteConfig = {
   },
 
   aboutMe:
-    "I’m a junior software developer based in Burgos, Spain with a strong interest in backend development, systems engineering, and open-source technologies. My path into software started with curiosity about how operating systems and networks work, which led me to explore Linux environments, enterprise infrastructure, and cybersecurity concepts. Over time, that curiosity evolved into building software solutions that are reliable, maintainable, and efficient. I enjoy working with modern development frameworks while maintaining a strong appreciation for well-designed systems and clean architecture.",
+    "I’m a backend-focused software developer from Burgos, Spain, with a strong interest in building reliable systems, clean architectures, and scalable backend services. My journey into software development started with a curiosity about how operating systems, networks, and infrastructure work. That curiosity led me to explore Linux environments, system administration, and cybersecurity concepts before moving deeper into software engineering.\n\nToday, I focus on designing and developing backend applications using technologies like Java, Spring Boot, and .NET. I enjoy solving complex problems, building efficient APIs, and creating software that is maintainable, scalable, and well-structured.\n\nBeyond coding, I regularly experiment with Linux servers, containerized environments, and deployment workflows in my personal lab to better understand how software behaves in real-world infrastructure.",
 
   skills: [
-    "Java",
-    "Spring Boot",
-    "C#",
-    ".NET",
-    "Python",
-    "REST APIs",
-    "SQL",
-    "Linux",
-    "Git",
-    "Docker",
-    "SAP",
-    "Odoo",
-  ],
+  "Java",
+  "Spring Boot",
+  "C#",
+  ".NET",
+  "Python",
+  "REST API Development",
+  "SQL & Relational Databases",
+  "Linux Systems",
+  "Git & Version Control",
+  "Docker & Containerization",
+  "SAP ERP",
+  "Odoo ERP",
+  "Power BI Data Visualization",
+],
 
   projects: [
     {
       name: "Tourism Observatory Platform",
       description:
-        "Web platform developed for the University of Burgos to visualize tourism data through interactive dashboards and analytics tools.",
+        "Data-driven web platform developed for the University of Burgos to analyze and visualize tourism metrics. The platform integrates interactive dashboards and analytics tools, enabling stakeholders to explore tourism trends and make data-informed decisions.",
       link: "https://siotb.powerappsportals.com/",
       skills: ["JavaScript", "Power BI", "REST APIs"],
     },
+
     {
-      name: "Business Management Integration",
+      name: "ERP Business Integration Tools",
       description:
-        "Internal software tools for integrating ERP systems and automating business workflows using SAP and Odoo environments.",
+        "Internal backend tools designed to connect and automate workflows between ERP systems. Focused on improving operational efficiency through system integration and data synchronization between SAP and Odoo environments.",
       link: "",
       skills: ["Python", "Odoo", "SQL"],
     },
+
     {
-      name: "Linux Server Lab",
+      name: "Linux Infrastructure Lab",
       description:
-        "Personal infrastructure lab used to experiment with Linux servers, networking configurations, and deployment automation.",
+        "Personal infrastructure lab used to experiment with Linux server environments, networking configurations, containerized applications, and deployment workflows. Used as a sandbox for testing backend services and DevOps concepts.",
       link: "",
       skills: ["Linux", "Docker", "Networking"],
     },
@@ -60,29 +64,31 @@ export const siteConfig = {
       title: "Software Developer",
       dateRange: "Mar 2026 - Present",
       bullets: [
-        "Developing internal software solutions to support business operations and data management.",
-        "Working with backend technologies to build and maintain scalable APIs.",
-        "Collaborating with cross-functional teams to design and implement new digital tools.",
+        "Developing internal software solutions that support business operations and data workflows.",
+        "Designing and maintaining backend APIs to power internal tools and integrations.",
+        "Collaborating with cross-functional teams to identify technical solutions for operational challenges.",
       ],
     },
+
     {
       company: "University of Burgos - Burgos, Spain",
       title: "Web Developer / Data Analyst",
       dateRange: "May 2025 - Jun 2025",
       bullets: [
-        "Developed the Tourism Observatory web platform integrating interactive Power BI dashboards.",
-        "Collaborated with non-technical staff to translate tourism data requirements into usable tools.",
-        "Assisted in structuring datasets and improving data visualization for decision making.",
+        "Developed the Tourism Observatory platform integrating interactive Power BI dashboards.",
+        "Translated tourism research requirements into practical digital tools for data exploration.",
+        "Improved data organization and visualization to support decision-making processes.",
       ],
     },
+
     {
       company: "IP365 - Burgos, Spain",
       title: "IT Technician",
       dateRange: "Mar 2024 - Jun 2024",
       bullets: [
-        "Provided IT support for networking, hardware, and software systems.",
-        "Assisted in maintaining web services and internal infrastructure.",
-        "Supported troubleshooting and deployment of business IT solutions.",
+        "Provided technical support for networking, hardware, and enterprise software systems.",
+        "Assisted in maintaining internal infrastructure and web services.",
+        "Supported troubleshooting, deployment, and maintenance of business IT environments.",
       ],
     },
   ],
@@ -93,11 +99,12 @@ export const siteConfig = {
       degree: "Higher Technician in Multiplatform Application Development (FP DAM)",
       dateRange: "2024 - 2026",
       achievements: [
-        "Specialized in backend development with Java and Spring Boot",
-        "Completed multiple practical software development projects",
-        "Training in databases, system architecture, and enterprise applications",
+        "Specialized in backend development using Java and Spring Boot",
+        "Completed multiple full-stack and backend software projects",
+        "Training in database systems, enterprise applications, and system architecture",
       ],
     },
+
     {
       school: "CE Colegio Círculo Católico de Obreros - Burgos, Spain",
       degree: "Technician in Microcomputer Systems and Networks (FP SMR)",
@@ -105,7 +112,7 @@ export const siteConfig = {
       achievements: [
         "Focused on networking, system administration, and IT infrastructure",
         "Hands-on experience with Linux systems and network configuration",
-        "Developed foundational programming and troubleshooting skills",
+        "Built a strong technical foundation in troubleshooting and systems engineering",
       ],
     },
   ],
