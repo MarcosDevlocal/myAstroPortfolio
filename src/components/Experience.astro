@@ -5,65 +5,52 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 
 {
   hasExperience && (
-    <section id="experience" class="p-8 sm:p-12 md:p-16 lg:p-24">
-      <div>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
-              Experience
-            </h2>
-            <div
-              class="w-[75px] h-[5px] mt-2 rounded-full"
-              style={`background-color: ${siteConfig.accentColor}`}
-            />
+    <section id="experience" class="border-b border-[var(--border)] px-4 py-20 sm:px-6 sm:py-24">
+      <div class="mx-auto max-w-6xl">
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+          <div class="reveal lg:col-span-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--accent)]">Experience</p>
+            <h2 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--text)] sm:text-4xl md:text-5xl">Impact</h2>
+            <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
+              Add roles in <code class="rounded-md bg-black/[0.05] px-1.5 py-0.5 text-xs dark:bg-white/10">experience[]</code> — newest first reads best.
+            </p>
           </div>
 
-          <div class="lg:col-span-8">
-            <div class="relative">
-              {siteConfig.experience.map((exp, index) => (
-                <div class="relative mb-12 last:mb-0">
-                  {/* Timeline dot at top of card */}
+          <div class="reveal relative lg:col-span-8" style="animation-delay: 80ms">
+            <div
+              aria-hidden="true"
+              class="absolute left-[11px] top-3 bottom-3 hidden w-px bg-[var(--border)] md:block"
+            />
+            <div class="space-y-8">
+              {siteConfig.experience.map((exp) => (
+                <article class="relative md:pl-10">
                   <div
-                    class="absolute left-1/2 -top-2 w-4 h-4 bg-white border-2 rounded-full -translate-x-1/2 z-20 transition-all duration-300"
-                    style={`border-color: ${siteConfig.accentColor}; background-color: ${siteConfig.accentColor}`}
+                    class="absolute left-1 top-2 hidden h-3 w-3 rounded-full border-2 border-[var(--bg-elevated)] md:block"
+                    style={`background: color-mix(in srgb, ${siteConfig.accentColor} 85%, transparent); box-shadow: 0 0 0 6px color-mix(in srgb, ${siteConfig.accentColor} 12%, transparent)`}
                   />
-
-                  {/* Connecting line below card */}
-                  {index < siteConfig.experience.length - 1 && (
-                    <div class="absolute left-1/2 bottom-0 w-0.5 h-12 bg-gray-300 -translate-x-1/2 translate-y-full z-10" />
-                  )}
-
-                  {/* Experience card */}
-                  <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 hover:shadow-md transition-shadow duration-300">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                  <div class="glass-panel rounded-[var(--radius-card)] p-6 motion-safe:transition motion-safe:duration-500 motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <h3 class="text-lg sm:text-xl font-semibold text-gray-900">
-                          {exp.title}
-                        </h3>
-                        <p
-                          class="text-base sm:text-lg"
-                          style={`color: ${siteConfig.accentColor}`}
-                        >
-                          {exp.company}
-                        </p>
+                        <h3 class="text-lg font-semibold tracking-tight text-[var(--text)]">{exp.title}</h3>
+                        <p class="mt-1 text-base font-medium text-[color:var(--accent)]">{exp.company}</p>
                       </div>
-                      <span class="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-0">
+                      <p class="shrink-0 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                         {exp.dateRange}
-                      </span>
+                      </p>
                     </div>
-
-                    <ul class="space-y-2">
+                    <ul class="mt-5 space-y-2">
                       {exp.bullets.map((bullet) => (
-                        <li class="flex items-start">
-                          <span class="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 mr-3 flex-shrink-0" />
-                          <span class="text-sm sm:text-base text-gray-600">
-                            {bullet}
-                          </span>
+                        <li class="flex gap-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
+                          <span
+                            class="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--text-muted)]/70"
+                            aria-hidden="true"
+                          />
+                          <span>{bullet}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           </div>

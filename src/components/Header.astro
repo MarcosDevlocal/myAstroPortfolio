@@ -1,78 +1,213 @@
 ---
 import { siteConfig } from "../config";
 
-const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
-const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
-const hasEducation = siteConfig.education && siteConfig.education.length > 0;
+const path = Astro.url.pathname;
+const onHome = path === "/" || path === "";
+
+const hasProjects = siteConfig.projects?.length > 0;
+const hasExperience = siteConfig.experience?.length > 0;
+const hasEducation = siteConfig.education?.length > 0;
+
+const hash = (id: string) => (onHome ? `#${id}` : `/#${id}`);
 ---
 
 <header
-  id="header"
-  class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300"
+  id="site-header"
+  class="site-header fixed inset-x-0 top-0 z-50 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_58%,transparent)] backdrop-blur-2xl backdrop-saturate-150 transition-[box-shadow,background-color,border-color] duration-500 supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--bg-elevated)_52%,transparent)]"
 >
-  <nav class="max-w-7xl mx-auto px-8 py-4">
-    <ul class="flex items-center gap-8 justify-center">
-      <li>
-        <a
-          href="#about"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
-        >
-          About
-        </a>
-      </li>
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+    <a
+      href="/"
+      class="min-w-0 shrink text-sm font-semibold tracking-tight text-[var(--text)] sm:text-base"
+    >
+      <span class="block truncate">{siteConfig.name.split(" ")[0]}</span>
+      <span class="hidden text-xs font-medium text-[var(--text-muted)] sm:block"
+        >{siteConfig.title}</span
+      >
+    </a>
+
+    <nav
+      class="hidden items-center gap-1 text-sm font-medium text-[var(--text-muted)] md:flex"
+      aria-label="Primary"
+    >
+      <a
+        class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+        href={hash("about")}>About</a
+      >
+      <a
+        class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+        href={hash("skills")}>Skills</a
+      >
       {
         hasProjects && (
-          <li>
-            <a
-              href="#projects"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Projects
-            </a>
-          </li>
+          <a
+            class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+            href="/projects"
+          >
+            Projects
+          </a>
         )
       }
+      <a
+        class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+        href="/blog">Blog</a
+      >
+      <a
+        class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+        href={hash("konari")}>Konari</a
+      >
+      <a
+        class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+        href={hash("journey")}>Journey</a
+      >
       {
         hasExperience && (
-          <li>
-            <a
-              href="#experience"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Experience
-            </a>
-          </li>
+          <a
+            class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+            href={hash("experience")}
+          >
+            Experience
+          </a>
         )
       }
       {
         hasEducation && (
-          <li>
-            <a
-              href="#education"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Education
-            </a>
-          </li>
+          <a
+            class="rounded-full px-3 py-1.5 transition duration-300 motion-safe:hover:scale-[1.03] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/10"
+            href={hash("education")}
+          >
+            Education
+          </a>
         )
       }
-    </ul>
-  </nav>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        data-theme-toggle
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text)] shadow-sm transition duration-300 hover:opacity-90 active:scale-95 motion-safe:hover:scale-105"
+        aria-label="Toggle color theme"
+      >
+        <svg
+          class="hidden h-[18px] w-[18px] dark:block"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"
+            stroke="currentColor"
+            stroke-width="2"></path>
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"></path>
+        </svg>
+        <svg class="block h-[18px] w-[18px] dark:hidden" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M21 14.5A8.5 8.5 0 0 1 9.5 3 6.5 6.5 0 1 0 21 14.5Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        id="nav-toggle"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text)] shadow-sm transition active:scale-95 motion-safe:hover:scale-105 md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label="Open menu"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M4 7h16M4 12h16M4 17h16"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-nav"
+    class="hidden border-t border-[var(--border)] bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] px-4 py-4 backdrop-blur-2xl md:hidden"
+  >
+    <div class="flex flex-col gap-1 text-sm font-medium">
+      <a class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10" href={hash("about")}
+        >About</a
+      >
+      <a class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10" href={hash("skills")}
+        >Skills</a
+      >
+      {
+        hasProjects && (
+          <a
+            class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10"
+            href="/projects"
+          >
+            Projects
+          </a>
+        )
+      }
+      <a class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10" href="/blog"
+        >Blog</a
+      >
+      <a class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10" href={hash("konari")}
+        >Konari</a
+      >
+      <a class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10" href={hash("journey")}
+        >Journey</a
+      >
+      {
+        hasExperience && (
+          <a
+            class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10"
+            href={hash("experience")}
+          >
+            Experience
+          </a>
+        )
+      }
+      {
+        hasEducation && (
+          <a
+            class="rounded-xl px-3 py-2 text-[var(--text)] hover:bg-black/5 dark:hover:bg-white/10"
+            href={hash("education")}
+          >
+            Education
+          </a>
+        )
+      }
+    </div>
+  </div>
 </header>
 
 <script>
-  window.addEventListener("scroll", () => {
-    const header = document.getElementById("header");
-    if (window.scrollY > 100) {
-      header?.classList.add("bg-white/80", "backdrop-blur-sm");
-    } else {
-      header?.classList.remove("bg-white/80", "backdrop-blur-sm");
-    }
+  const header = document.querySelector(".site-header");
+  function syncHeaderScroll() {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 12);
+  }
+  window.addEventListener("scroll", syncHeaderScroll, { passive: true });
+  syncHeaderScroll();
+
+  const btn = document.getElementById("nav-toggle");
+  const panel = document.getElementById("mobile-nav");
+  btn?.addEventListener("click", () => {
+    const open = panel?.classList.toggle("hidden") === false;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  });
+  panel?.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => {
+      panel.classList.add("hidden");
+      btn?.setAttribute("aria-expanded", "false");
+      btn?.setAttribute("aria-label", "Open menu");
+    });
   });
 </script>
-
-<style>
-  html {
-    scroll-behavior: smooth;
-  }
-</style>

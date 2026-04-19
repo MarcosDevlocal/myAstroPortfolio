@@ -1,119 +1,187 @@
-export const siteConfig = {
-  name: "Marcos López Ortego",
-  title: "Backend Software Developer",
-  description:
-    "Backend-focused software developer passionate about building reliable systems, APIs, and scalable applications. Experienced with Java, Spring Boot, .NET, and Linux-based environments.",
+/**
+ * Portfolio content — edit this file to update the site.
+ *
+ * Skills: add `{ name: "…", category: "…" }` entries (category groups them on the page).
+ * You can still use plain strings; they appear under "General".
+ *
+ * Projects / experience / education: append new objects to the arrays.
+ */
 
-  accentColor: "#e28c14d0",
+export type SkillEntry = string | { name: string; category?: string };
+
+export type Project = {
+  name: string;
+  description: string;
+  link?: string;
+  skills?: string[];
+};
+
+export type Experience = {
+  company: string;
+  title: string;
+  dateRange: string;
+  bullets: string[];
+};
+
+export type Education = {
+  school: string;
+  degree: string;
+  dateRange: string;
+  achievements: string[];
+};
+
+export type KonariConfig = {
+  /** Set to empty string to hide the external link button */
+  url: string;
+  tagline: string;
+  mission: string;
+  highlights: string[];
+};
+
+export type SiteConfig = {
+  name: string;
+  title: string;
+  description: string;
+  accentColor: string;
+  social: {
+    email?: string;
+    linkedin?: string;
+    twitter?: string;
+    github?: string;
+  };
+  aboutMe: string;
+  skills: SkillEntry[];
+  projects: Project[];
+  experience: Experience[];
+  education: Education[];
+  konari: KonariConfig;
+};
+
+export function normalizeSkill(s: SkillEntry): { name: string; category: string } {
+  if (typeof s === "string") return { name: s, category: "General" };
+  return { name: s.name, category: s.category?.trim() || "General" };
+}
+
+export const siteConfig: SiteConfig = {
+  name: "Marcos Lopez Ortego",
+  title: "Junior Software Developer",
+  description:
+    "Backend-focused developer building reliable systems, APIs, and meaningful products — including work with my nonprofit, Konari.",
+
+  accentColor: "#0A84FF",
 
   social: {
     email: "marcosloport@gmail.com",
     linkedin: "https://www.linkedin.com/in/marcos-l%C3%B3pez-ortego-537736218/",
-    twitter: "",
     github: "https://github.com/MarcosDevLocal",
   },
 
   aboutMe:
-    "I’m a backend-focused software developer from Burgos, Spain, with a strong interest in building reliable systems, clean architectures, and scalable backend services. My journey into software development started with a curiosity about how operating systems, networks, and infrastructure work. That curiosity led me to explore Linux environments, system administration, and cybersecurity concepts before moving deeper into software engineering.\n\nToday, I focus on designing and developing backend applications using technologies like Java, Spring Boot, and .NET. I enjoy solving complex problems, building efficient APIs, and creating software that is maintainable, scalable, and well-structured.\n\nBeyond coding, I regularly experiment with Linux servers, containerized environments, and deployment workflows in my personal lab to better understand how software behaves in real-world infrastructure.",
+    "I'm a junior software developer from Burgos, Spain, focused on backends that feel calm under pressure: clear APIs, solid data models, and deployments you can trust.\n\nMy path started with curiosity about how systems actually work — Linux, networks, and infrastructure — before moving deeper into engineering. Today I build with Java, Spring Boot, and .NET, and I keep a home lab running so ideas turn into working software, not just slides.\n\nOutside client and coursework projects, I channel energy into Konari, a nonprofit I run to put technology to work for people who need it most.",
 
   skills: [
-  "Java",
-  "Spring Boot",
-  "C#",
-  ".NET",
-  "Python",
-  "REST API Development",
-  "SQL & Relational Databases",
-  "Linux Systems",
-  "Git & Version Control",
-  "Docker & Containerization",
-  "SAP ERP",
-  "Odoo ERP",
-  "Power BI Data Visualization",
-],
+    { name: "Java", category: "Languages" },
+    { name: "C#", category: "Languages" },
+    { name: "Python", category: "Languages" },
+    { name: "Spring Boot", category: "Backend" },
+    { name: ".NET", category: "Backend" },
+    { name: "REST APIs", category: "Backend" },
+    { name: "SQL", category: "Data" },
+    { name: "Power BI", category: "Data" },
+    { name: "Docker", category: "Platform" },
+    { name: "Linux", category: "Platform" },
+    { name: "Git", category: "Platform" },
+    { name: "SAP ERP", category: "Business systems" },
+    { name: "Odoo ERP", category: "Business systems" },
+  ],
 
   projects: [
     {
       name: "Tourism Observatory Platform",
       description:
-        "Data-driven web platform developed for the University of Burgos to analyze and visualize tourism metrics. The platform integrates interactive dashboards and analytics tools, enabling stakeholders to explore tourism trends and make data-informed decisions.",
+        "Data-driven web platform for the University of Burgos to analyze and visualize tourism metrics — interactive dashboards and analytics for stakeholders.",
       link: "https://siotb.powerappsportals.com/",
       skills: ["JavaScript", "Power BI", "REST APIs"],
     },
-
     {
-      name: "ERP Business Integration Tools",
+      name: "ERP integration tooling",
       description:
-        "Internal backend tools designed to connect and automate workflows between ERP systems. Focused on improving operational efficiency through system integration and data synchronization between SAP and Odoo environments.",
-      link: "",
+        "Backend utilities to connect SAP and Odoo workflows — automation and synchronization focused on operational efficiency.",
       skills: ["Python", "Odoo", "SQL"],
     },
-
     {
-      name: "Linux Infrastructure Lab",
+      name: "Linux infrastructure lab",
       description:
-        "Personal infrastructure lab used to experiment with Linux server environments, networking configurations, containerized applications, and deployment workflows. Used as a sandbox for testing backend services and DevOps concepts.",
-      link: "",
+        "Personal lab for servers, networking, containers, and deployments — where backend services and DevOps ideas get battle-tested.",
       skills: ["Linux", "Docker", "Networking"],
     },
   ],
 
   experience: [
     {
-      company: "HISZPANIA DE LUXE - Warsaw, Poland",
+      company: "HISZPANIA DE LUXE — Warsaw, Poland",
       title: "Software Developer",
-      dateRange: "Mar 2026 - Present",
+      dateRange: "Mar 2026 — Present",
       bullets: [
-        "Developing internal software solutions that support business operations and data workflows.",
-        "Designing and maintaining backend APIs to power internal tools and integrations.",
-        "Collaborating with cross-functional teams to identify technical solutions for operational challenges.",
+        "Shipping internal tools that support operations and data workflows.",
+        "Maintaining backend APIs that power integrations across teams.",
+        "Partnering with stakeholders to turn messy problems into maintainable software.",
       ],
     },
-
     {
-      company: "University of Burgos - Burgos, Spain",
+      company: "University of Burgos — Burgos, Spain",
       title: "Web Developer / Data Analyst",
-      dateRange: "May 2025 - Jun 2025",
+      dateRange: "May 2025 — Jun 2025",
       bullets: [
-        "Developed the Tourism Observatory platform integrating interactive Power BI dashboards.",
-        "Translated tourism research requirements into practical digital tools for data exploration.",
-        "Improved data organization and visualization to support decision-making processes.",
+        "Built the Tourism Observatory experience with Power BI embedded analytics.",
+        "Translated research needs into practical tools for exploration and reporting.",
+        "Improved data structure and visualization quality for decision-makers.",
       ],
     },
-
     {
-      company: "IP365 - Burgos, Spain",
+      company: "IP365 — Burgos, Spain",
       title: "IT Technician",
-      dateRange: "Mar 2024 - Jun 2024",
+      dateRange: "Mar 2024 — Jun 2024",
       bullets: [
-        "Provided technical support for networking, hardware, and enterprise software systems.",
-        "Assisted in maintaining internal infrastructure and web services.",
-        "Supported troubleshooting, deployment, and maintenance of business IT environments.",
+        "Supported networking, hardware, and enterprise software environments.",
+        "Helped maintain internal infrastructure and services.",
+        "Owned troubleshooting cycles from triage to resolution.",
       ],
     },
   ],
 
   education: [
     {
-      school: "CE Santamaría La Nueva y San José Artesano - Burgos, Spain",
-      degree: "Higher Technician in Multiplatform Application Development (FP DAM)",
-      dateRange: "2024 - 2026",
+      school: "CE Santamaría La Nueva y San José Artesano — Burgos, Spain",
+      degree: "Higher Technician in Multiplatform Application Development (DAM)",
+      dateRange: "2024 — 2026",
       achievements: [
-        "Specialized in backend development using Java and Spring Boot",
-        "Completed multiple full-stack and backend software projects",
-        "Training in database systems, enterprise applications, and system architecture",
+        "Backend specialization with Java and Spring Boot",
+        "Multiple full-stack and backend projects delivered end-to-end",
+        "Databases, enterprise patterns, and system architecture coursework",
       ],
     },
-
     {
-      school: "CE Colegio Círculo Católico de Obreros - Burgos, Spain",
-      degree: "Technician in Microcomputer Systems and Networks (FP SMR)",
-      dateRange: "2022 - 2024",
+      school: "CE Colegio Círculo Católico de Obreros — Burgos, Spain",
+      degree: "Technician in Microcomputer Systems and Networks (SMR)",
+      dateRange: "2022 — 2024",
       achievements: [
-        "Focused on networking, system administration, and IT infrastructure",
-        "Hands-on experience with Linux systems and network configuration",
-        "Built a strong technical foundation in troubleshooting and systems engineering",
+        "Networking, administration, and infrastructure fundamentals",
+        "Hands-on Linux and network configuration",
+        "Strong troubleshooting and systems mindset",
       ],
     },
   ],
+
+  konari: {
+    url: "",
+    tagline: "Technology with a heartbeat",
+    mission:
+      "Konari is the nonprofit I lead — a space where we aim technology at real human needs: access, education, and practical support for communities that are often left behind by default product roadmaps.",
+    highlights: [
+      "Volunteer-driven initiatives with clear outcomes",
+      "Open, ethical use of software and data",
+      "Partnerships that prioritize dignity over optics",
+    ],
+  },
 };
