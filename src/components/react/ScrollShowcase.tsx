@@ -23,7 +23,7 @@ export default function ScrollShowcase() {
       }
     >
       <img
-        src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80"
+        src="/images/kanso.png"
         alt="Laptop on a desk with code on screen"
         width={1400}
         height={900}
