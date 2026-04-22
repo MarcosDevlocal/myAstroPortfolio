@@ -1,6 +1,10 @@
 ---
 import "../styles/global.css";
-import MouseGlow from "../components/react/MouseGlow";
+import AuroraBackground from "../components/ui/AuroraBackground";
+import CustomCursor from "../components/ui/CustomCursor";
+import ScrollToTop from "../components/ui/ScrollToTop";
+import KonamiEasterEgg from "../components/ui/KonamiEasterEgg";
+import LogoClickEgg from "../components/ui/LogoClickEgg";
 
 type Props = {
   title: string;
@@ -8,7 +12,7 @@ type Props = {
   accentColor?: string;
 };
 
-const { title, description, accentColor = "#0A84FF" } = Astro.props;
+const { title, description, accentColor = "#6366F1" } = Astro.props;
 const desc = description ?? title;
 ---
 
@@ -21,13 +25,18 @@ const desc = description ?? title;
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={desc} />
     <meta name="theme-color" content={accentColor} />
+
+    <!-- Inter + JetBrains Mono from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;600&display=swap"
       rel="stylesheet"
     />
+
     <title>{title}</title>
+
+    <!-- Theme init: run before paint to avoid flash -->
     <script is:inline>
       (function () {
         try {
@@ -40,16 +49,35 @@ const desc = description ?? title;
       })();
     </script>
   </head>
+
   <body
-    class="page-shell antialiased [font-family:Inter,ui-sans-serif,system-ui,sans-serif]"
-    style={`--accent: ${accentColor}`}
+    class="page-shell antialiased"
+    style={`--accent: ${accentColor}; --indigo: ${accentColor}`}
   >
-    <MouseGlow client:media="(min-width: 768px) and (prefers-reduced-motion: no-preference)" />
+    <!-- Fixed aurora behind everything (z-0) -->
+    <AuroraBackground client:load />
+
+    <!-- Custom cursor (desktop + reduced-motion off only) -->
+    <CustomCursor
+      client:media="(min-width: 768px) and (prefers-reduced-motion: no-preference)"
+    />
+
+    <!-- Easter eggs -->
+    <KonamiEasterEgg client:idle />
+    <LogoClickEgg client:idle logoId="site-logo" />
+
+    <!-- Scroll to top FAB -->
+    <ScrollToTop client:visible />
+
+    <!-- Page content (above aurora, z-10) -->
     <div class="relative z-10 min-h-dvh">
       <slot />
     </div>
+
+    <!-- Theme toggle + IntersectionObserver reveal + Lenis scroll -->
     <script is:inline>
       (function () {
+        // ── Theme toggle ──────────────────────────────────────────────────
         var k = "konari-theme";
         document.addEventListener("click", function (e) {
           var t = e.target;
@@ -59,36 +87,61 @@ const desc = description ?? title;
           e.preventDefault();
           var next = document.documentElement.classList.contains("dark") ? "light" : "dark";
           document.documentElement.classList.toggle("dark", next === "dark");
-          try {
-            localStorage.setItem(k, next);
-          } catch (err) {}
+          try { localStorage.setItem(k, next); } catch (err) {}
         });
 
+        // ── Reveal observer ───────────────────────────────────────────────
         var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduced) return;
-        var nodes = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
-        if (!nodes.length || !("IntersectionObserver" in window)) {
+        var selectors = ".reveal, .reveal-soft, .reveal-left, .reveal-right, .line-grow";
+        var nodes = Array.prototype.slice.call(document.querySelectorAll(selectors));
+
+        if (reduced) {
+          nodes.forEach(function (n) { n.classList.add("is-visible"); });
+        } else if ("IntersectionObserver" in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (en) {
+                if (en.isIntersecting) {
+                  en.target.classList.add("is-visible");
+                  io.unobserve(en.target);
+                }
+              });
+            },
+            { rootMargin: "0px 0px -8% 0px", threshold: 0.06 }
+          );
           nodes.forEach(function (n) {
-            n.classList.add("is-visible");
+            var delay = n.getAttribute("data-reveal-delay");
+            if (delay) n.style.animationDelay = delay + "ms";
+            io.observe(n);
           });
-          return;
+        } else {
+          nodes.forEach(function (n) { n.classList.add("is-visible"); });
         }
-        var io = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (en) {
-              if (en.isIntersecting) {
-                en.target.classList.add("is-visible");
-                io.unobserve(en.target);
-              }
-            });
-          },
-          { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
-        );
-        nodes.forEach(function (n) {
-          var delay = n.getAttribute("data-reveal-delay");
-          if (delay) n.style.animationDelay = delay + "ms";
-          io.observe(n);
-        });
+
+        // ── Lenis smooth scroll (progressive enhancement) ─────────────────
+        import("/node_modules/lenis/dist/lenis.mjs")
+          .then(function (mod) {
+            var Lenis = mod.default || mod.Lenis;
+            if (!Lenis) return;
+            var lenis = new Lenis({ lerp: 0.1, duration: 1.2, smoothWheel: true });
+            function raf(time) {
+              lenis.raf(time);
+              requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+          })
+          .catch(function () {
+            // Lenis not available — no problem, native scroll is the fallback
+          });
+
+        // ── Scroll chevron fade ───────────────────────────────────────────
+        var chevron = document.querySelector(".scroll-chevron");
+        if (chevron) {
+          window.addEventListener("scroll", function () {
+            var depth = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            chevron.classList.toggle("is-hidden", depth > 0.2);
+          }, { passive: true });
+        }
       })();
     </script>
   </body>

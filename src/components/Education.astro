@@ -3,44 +3,57 @@ import { siteConfig } from "../config";
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 ---
 
-{
-  hasEducation && (
-    <section id="education" class="border-b border-[var(--border)] px-4 py-20 sm:px-6 sm:py-24">
-      <div class="mx-auto max-w-6xl">
-        <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-          <div class="reveal lg:col-span-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--accent)]">Education</p>
-            <h2 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--text)] sm:text-4xl md:text-5xl">Foundations</h2>
-            <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
-              Extend <code class="rounded-md bg-black/[0.05] px-1.5 py-0.5 text-xs dark:bg-white/10">education[]</code> with new schools or programs anytime.
-            </p>
-          </div>
+{hasEducation && (
+  <section id="education" class="border-b border-[var(--border)] px-4 py-24 sm:px-6 sm:py-28">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
 
-          <div class="reveal space-y-6 lg:col-span-8" style="animation-delay: 80ms">
-            {siteConfig.education.map((edu) => (
-              <div class="glass-panel rounded-[var(--radius-card)] p-6 motion-safe:transition motion-safe:duration-500 motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg">
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <h3 class="text-lg font-semibold tracking-tight text-[var(--text)]">{edu.degree}</h3>
-                    <p class="mt-1 text-base font-medium text-[color:var(--accent)]">{edu.school}</p>
-                  </div>
-                  <p class="shrink-0 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    {edu.dateRange}
-                  </p>
-                </div>
-                <ul class="mt-5 space-y-2">
-                  {edu.achievements.map((achievement) => (
-                    <li class="flex gap-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
-                      <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--text-muted)]/70" aria-hidden="true" />
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+        {/* ── Left label ─────────────────────────────────────────── */}
+        <div class="reveal lg:col-span-4">
+          <p class="font-mono-label text-[var(--indigo)]">Education</p>
+          <h2 class="mt-3 text-pretty text-4xl font-bold tracking-tight text-[var(--text)] sm:text-5xl" style="letter-spacing:-0.03em">
+            Foundations
+          </h2>
+          <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
+            The academic groundwork behind the software.
+          </p>
         </div>
+
+        {/* ── Cards ──────────────────────────────────────────────── */}
+        <div class="reveal space-y-5 lg:col-span-8" data-reveal-delay="80">
+          {siteConfig.education.map((edu, i) => (
+            <div
+              class="glass-panel rounded-[var(--radius-card)] p-6 sm:p-7 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 class="text-lg font-bold tracking-tight text-[var(--text)] sm:text-xl">
+                    {edu.degree}
+                  </h3>
+                  <p class="mt-1 text-sm font-semibold text-[var(--indigo)]">{edu.school}</p>
+                </div>
+                <span class="font-mono-label shrink-0 rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--indigo)_10%,transparent)] px-3 py-1 text-[var(--text-muted)]">
+                  {edu.dateRange}
+                </span>
+              </div>
+
+              <ul class="mt-5 space-y-2.5">
+                {edu.achievements.map((achievement) => (
+                  <li class="flex gap-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
+                    <span
+                      class="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full"
+                      style="background: var(--teal)"
+                      aria-hidden="true"
+                    />
+                    <span>{achievement}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
       </div>
-    </section>
-  )
-}
+    </div>
+  </section>
+)}

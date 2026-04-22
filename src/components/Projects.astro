@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from "../config";
+import TiltCard from "./ui/TiltCard";
 
 type Props = {
   includeHeading?: boolean;
@@ -7,96 +8,123 @@ type Props = {
 
 const { includeHeading = true } = Astro.props;
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
+
+// Gradient patterns per project index
+const cardGradients = [
+  "radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.25) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(20,184,166,0.2) 0%, transparent 50%)",
+  "radial-gradient(ellipse at 70% 30%, rgba(244,63,94,0.2) 0%, transparent 60%), radial-gradient(ellipse at 20% 70%, rgba(99,102,241,0.18) 0%, transparent 50%)",
+  "radial-gradient(ellipse at 50% 0%, rgba(20,184,166,0.22) 0%, transparent 55%), radial-gradient(ellipse at 90% 90%, rgba(139,92,246,0.2) 0%, transparent 50%)",
+];
 ---
 
-{
-  hasProjects && (
-    <section id="projects" class="border-b border-[var(--border)] px-4 py-20 sm:px-6 sm:py-24">
-      <div class="mx-auto max-w-6xl">
-        <div class:list={["grid grid-cols-1 gap-12 lg:gap-16", includeHeading && "lg:grid-cols-12"]}>
-          {
-            includeHeading && (
-              <div class="reveal lg:col-span-4">
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--accent)]">Work</p>
-                <h2 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--text)] sm:text-4xl md:text-5xl">
-                  Projects
-                </h2>
-                <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
-                  Selected builds — from research platforms to integration tooling and home-lab experiments.
-                </p>
-                <a
-                  href="/projects"
-                  class="mt-6 inline-flex text-sm font-semibold text-[color:var(--accent)] underline-offset-4 hover:underline"
+{hasProjects && (
+  <section id="projects" class="border-b border-[var(--border)] px-4 py-24 sm:px-6 sm:py-28">
+    <div class="mx-auto max-w-6xl">
+
+      {includeHeading && (
+        <div class="reveal mb-14">
+          <p class="font-mono-label text-[var(--indigo)]">Work</p>
+          <h2 class="mt-3 text-pretty text-4xl font-bold tracking-tight text-[var(--text)] sm:text-5xl" style="letter-spacing:-0.03em">
+            Selected builds
+          </h2>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-[var(--text-muted)]">
+            From research platforms to integration tooling and home-lab experiments.
+          </p>
+          <a
+            href="/projects"
+            class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--indigo)] underline-offset-4 hover:underline"
+            data-interactive
+          >
+            Open full projects page
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17"/>
+            </svg>
+          </a>
+        </div>
+      )}
+
+      {/* ── Bento grid ──────────────────────────────────────────── */}
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {siteConfig.projects.map((project, index) => {
+          // First project spans full width; rest fill grid
+          const isHero = index === 0;
+          const glowColor = ["rgba(99,102,241,0.4)", "rgba(244,63,94,0.35)", "rgba(20,184,166,0.35)"][index % 3];
+          const gradient = cardGradients[index % cardGradients.length];
+
+          return (
+            <div
+              class={`reveal group ${isHero ? "md:col-span-2 lg:col-span-3" : ""}`}
+              data-reveal-delay={`${index * 90}`}
+            >
+              <TiltCard
+                client:visible
+                glowColor={glowColor}
+                maxTilt={isHero ? 4 : 8}
+                className="h-full"
+              >
+                {/* Glass card body */}
+                <div
+                  class="glass-panel relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)]"
+                  style={`min-height: ${isHero ? "280px" : "240px"}`}
                 >
-                  Open full projects page
-                </a>
-              </div>
-            )
-          }
+                  {/* Abstract gradient background */}
+                  <div
+                    aria-hidden="true"
+                    class="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+                    style={`background: ${gradient}`}
+                  />
 
-          <div class:list={["", includeHeading && "lg:col-span-8"]}>
-            <div class="space-y-6">
-              {siteConfig.projects.map((project, index) => {
-                const Tag = project.link ? "a" : "div";
-                const linkProps = project.link
-                  ? { href: project.link, target: "_blank", rel: "noopener noreferrer" as const }
-                  : {};
+                  <div class={`relative flex flex-col gap-4 p-6 sm:p-8 ${isHero ? "lg:flex-row lg:gap-12 lg:items-start" : ""}`}>
+                    {/* Number + title */}
+                    <div class={isHero ? "lg:flex-1" : ""}>
+                      <span class="font-mono-label text-[var(--indigo)]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h3 class={`mt-1.5 font-bold tracking-tight text-[var(--text)] ${isHero ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"}`}
+                          style="letter-spacing: -0.02em"
+                      >
+                        {project.name}
+                      </h3>
+                    </div>
 
-                return (
-                  <div class="reveal group" style={`animation-delay: ${index * 70}ms`}>
-                    <Tag
-                      {...linkProps}
-                      class:list={[
-                        "glass-panel relative block overflow-hidden rounded-[var(--radius-card)] p-6 motion-safe:transition motion-safe:duration-500",
-                        project.link &&
-                          "motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-xl",
-                      ]}
-                    >
-                      {project.link && (
-                        <span class="absolute right-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--text)] text-[var(--bg-elevated)] shadow-md transition duration-300 group-hover:opacity-90 motion-safe:group-hover:scale-110">
-                          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17" />
-                          </svg>
-                        </span>
+                    {/* Description + tags */}
+                    <div class={isHero ? "lg:flex-1" : ""}>
+                      <p class="text-base leading-relaxed text-[var(--text-muted)]">
+                        {project.description}
+                      </p>
+
+                      {project.skills && project.skills.length > 0 && (
+                        <div class="mt-4 flex flex-wrap gap-2">
+                          {project.skills.map((skill) => (
+                            <span class="glass-chip rounded-full px-3 py-1 font-mono-label text-[var(--text)]">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
                       )}
 
-                      <div class="space-y-4">
-                        <div>
-                          <span class="text-xs font-semibold tracking-wider text-[color:var(--accent)]">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <h3 class="mt-1 text-xl font-semibold tracking-tight text-[var(--text)] sm:text-2xl">
-                            {project.name}
-                          </h3>
-                        </div>
-
-                        <p
-                          class:list={[
-                            "text-base leading-relaxed text-[var(--text-muted)] sm:text-lg",
-                            project.link && "pr-14",
-                          ]}
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--indigo)] px-4 py-2 text-sm font-semibold text-[var(--indigo)] transition-all duration-200 hover:bg-[color-mix(in_srgb,var(--indigo)_12%,transparent)] hover:scale-[1.02]"
+                          data-interactive
                         >
-                          {project.description}
-                        </p>
-
-                        {project.skills && project.skills.length > 0 && (
-                          <div class="flex flex-wrap gap-2 pt-1">
-                            {project.skills.map((skill) => (
-                              <span class="glass-chip rounded-full px-3 py-1 text-xs font-semibold text-[var(--text)]">
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </Tag>
+                          Visit project
+                          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17"/>
+                          </svg>
+                        </a>
+                      )}
+                    </div>
                   </div>
-                );
-              })}
+                </div>
+              </TiltCard>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
-    </section>
-  )
-}
+    </div>
+  </section>
+)}

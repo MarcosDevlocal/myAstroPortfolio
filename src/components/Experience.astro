@@ -3,59 +3,132 @@ import { siteConfig } from "../config";
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 ---
 
-{
-  hasExperience && (
-    <section id="experience" class="border-b border-[var(--border)] px-4 py-20 sm:px-6 sm:py-24">
-      <div class="mx-auto max-w-6xl">
-        <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-          <div class="reveal lg:col-span-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--accent)]">Experience</p>
-            <h2 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--text)] sm:text-4xl md:text-5xl">Impact</h2>
-            <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
-              Add roles in <code class="rounded-md bg-black/[0.05] px-1.5 py-0.5 text-xs dark:bg-white/10">experience[]</code> — newest first reads best.
-            </p>
-          </div>
+{hasExperience && (
+  <section id="experience" class="border-b border-[var(--border)] px-4 py-24 sm:px-6 sm:py-28">
+    <div class="mx-auto max-w-6xl">
 
-          <div class="reveal relative lg:col-span-8" style="animation-delay: 80ms">
-            <div
-              aria-hidden="true"
-              class="absolute left-[11px] top-3 bottom-3 hidden w-px bg-[var(--border)] md:block"
+      {/* ── Section header ───────────────────────────────────────────── */}
+      <div class="reveal mb-16">
+        <p class="font-mono-label text-[var(--indigo)]">Experience</p>
+        <h2 class="mt-3 text-pretty text-4xl font-bold tracking-tight text-[var(--text)] sm:text-5xl" style="letter-spacing:-0.03em">
+          Where I've built
+        </h2>
+      </div>
+
+      {/* ── Timeline ─────────────────────────────────────────────────── */}
+      <div class="relative">
+
+        {/* SVG timeline line — draws itself via JS IntersectionObserver */}
+        <div
+          class="reveal absolute left-[22px] top-0 bottom-0 hidden w-px md:block"
+          aria-hidden="true"
+          id="timeline-wrapper"
+          data-reveal-delay="0"
+        >
+          <svg
+            id="timeline-svg"
+            width="2"
+            height="100%"
+            viewBox="0 0 2 1000"
+            preserveAspectRatio="none"
+            class="h-full w-full overflow-visible"
+            aria-hidden="true"
+          >
+            <line
+              id="timeline-line-el"
+              x1="1" y1="0" x2="1" y2="1000"
+              stroke="var(--border)"
+              stroke-width="2"
+              class="timeline-line"
             />
-            <div class="space-y-8">
-              {siteConfig.experience.map((exp) => (
-                <article class="relative md:pl-10">
-                  <div
-                    class="absolute left-1 top-2 hidden h-3 w-3 rounded-full border-2 border-[var(--bg-elevated)] md:block"
-                    style={`background: color-mix(in srgb, ${siteConfig.accentColor} 85%, transparent); box-shadow: 0 0 0 6px color-mix(in srgb, ${siteConfig.accentColor} 12%, transparent)`}
-                  />
-                  <div class="glass-panel rounded-[var(--radius-card)] p-6 motion-safe:transition motion-safe:duration-500 motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg">
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                      <div>
-                        <h3 class="text-lg font-semibold tracking-tight text-[var(--text)]">{exp.title}</h3>
-                        <p class="mt-1 text-base font-medium text-[color:var(--accent)]">{exp.company}</p>
-                      </div>
-                      <p class="shrink-0 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                        {exp.dateRange}
-                      </p>
-                    </div>
-                    <ul class="mt-5 space-y-2">
-                      {exp.bullets.map((bullet) => (
-                        <li class="flex gap-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
-                          <span
-                            class="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--text-muted)]/70"
-                            aria-hidden="true"
-                          />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
+            {/* Animated gradient overlay */}
+            <line
+              x1="1" y1="0" x2="1" y2="1000"
+              stroke="url(#timelineGrad)"
+              stroke-width="2"
+              stroke-dasharray="1000"
+              stroke-dashoffset="1000"
+              style="transition: stroke-dashoffset 2s cubic-bezier(0.22,1,0.36,1)"
+              id="timeline-line-glow"
+            />
+            <defs>
+              <linearGradient id="timelineGrad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+                <stop offset="0%"   stop-color="var(--indigo)" />
+                <stop offset="50%"  stop-color="var(--teal)" />
+                <stop offset="100%" stop-color="var(--rose)" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* Experience entries */}
+        <div class="space-y-10">
+          {siteConfig.experience.map((exp, i) => (
+            <article
+              class={`reveal relative md:pl-14 ${i % 2 === 0 ? "reveal-left" : "reveal-right"}`}
+              data-reveal-delay={`${i * 100}`}
+            >
+              {/* Timeline dot */}
+              <div
+                class="absolute left-3 top-5 hidden h-4 w-4 -translate-x-1/2 rounded-full border-2 border-[var(--bg)] md:block"
+                style={`background: linear-gradient(135deg, var(--indigo), var(--teal)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--indigo) 20%, transparent), 0 0 16px -4px var(--glow-indigo)`}
+                aria-hidden="true"
+              />
+
+              {/* Card */}
+              <div class="glass-panel rounded-[var(--radius-card)] p-6 sm:p-7 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h3 class="text-lg font-bold tracking-tight text-[var(--text)] sm:text-xl">
+                      {exp.title}
+                    </h3>
+                    <p class="mt-1 text-sm font-semibold text-[var(--indigo)]">{exp.company}</p>
                   </div>
-                </article>
-              ))}
-            </div>
-          </div>
+                  <span class="font-mono-label shrink-0 rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--indigo)_10%,transparent)] px-3 py-1 text-[var(--text-muted)]">
+                    {exp.dateRange}
+                  </span>
+                </div>
+
+                <ul class="mt-5 space-y-2.5">
+                  {exp.bullets.map((bullet) => (
+                    <li class="flex gap-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
+                      <span
+                        class="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full"
+                        style="background: var(--indigo)"
+                        aria-hidden="true"
+                      />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
-    </section>
-  )
-}
+    </div>
+  </section>
+)}
+
+<script>
+  // Draw the timeline gradient line when the section enters viewport
+  const lineGlow = document.getElementById("timeline-line-glow");
+  const wrapper  = document.getElementById("timeline-wrapper");
+
+  if (lineGlow && wrapper && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          lineGlow.style.strokeDashoffset = "0";
+          io.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    io.observe(wrapper);
+  }
+
+  // Also draw the base line instantly
+  const baseLine = document.getElementById("timeline-line-el") as unknown as SVGLineElement | null;
+  if (baseLine) baseLine.classList.add("is-drawn");
+</script>
