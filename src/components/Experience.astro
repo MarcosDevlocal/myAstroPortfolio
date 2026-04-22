@@ -1,6 +1,13 @@
 ---
 import { siteConfig } from "../config";
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
+
+// Map company names to accent colors
+const companyAccents = [
+  { color: "var(--indigo)", glow: "var(--glow-indigo)" },
+  { color: "var(--teal)",   glow: "var(--glow-teal)"   },
+  { color: "var(--rose)",   glow: "var(--glow-rose)"   },
+];
 ---
 
 {hasExperience && (
@@ -8,17 +15,22 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
     <div class="mx-auto max-w-6xl">
 
       {/* ── Section header ───────────────────────────────────────────── */}
-      <div class="reveal mb-16">
-        <p class="font-mono-label text-[var(--indigo)]">Experience</p>
-        <h2 class="mt-3 text-pretty text-4xl font-bold tracking-tight text-[var(--text)] sm:text-5xl" style="letter-spacing:-0.03em">
-          Where I've built
-        </h2>
+      <div class="reveal mb-16 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="font-mono-label text-[var(--indigo)]">Experience</p>
+          <h2 class="mt-3 text-pretty text-4xl font-bold tracking-tight text-[var(--text)] sm:text-5xl" style="letter-spacing:-0.03em">
+            Where I've built
+          </h2>
+        </div>
+        <p class="font-mono-label text-[var(--text-muted)] shrink-0 pb-1">
+          {siteConfig.experience.length} roles · {new Date().getFullYear() - 2024}+ years
+        </p>
       </div>
 
       {/* ── Timeline ─────────────────────────────────────────────────── */}
       <div class="relative">
 
-        {/* SVG timeline line — draws itself via JS IntersectionObserver */}
+        {/* SVG timeline line */}
         <div
           class="reveal absolute left-[22px] top-0 bottom-0 hidden w-px md:block"
           aria-hidden="true"
@@ -62,53 +74,78 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
         </div>
 
         {/* Experience entries */}
-        <div class="space-y-10">
-          {siteConfig.experience.map((exp, i) => (
-            <article
-              class={`reveal relative md:pl-14 ${i % 2 === 0 ? "reveal-left" : "reveal-right"}`}
-              data-reveal-delay={`${i * 100}`}
-            >
-              {/* Timeline dot */}
-              <div
-                class="absolute left-3 top-5 hidden h-4 w-4 -translate-x-1/2 rounded-full border-2 border-[var(--bg)] md:block"
-                style={`background: linear-gradient(135deg, var(--indigo), var(--teal)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--indigo) 20%, transparent), 0 0 16px -4px var(--glow-indigo)`}
-                aria-hidden="true"
-              />
-
-              {/* Card */}
-              <div class="glass-panel rounded-[var(--radius-card)] p-6 sm:p-7 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg">
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <h3 class="text-lg font-bold tracking-tight text-[var(--text)] sm:text-xl">
-                      {exp.title}
-                    </h3>
-                    <p class="mt-1 text-sm font-semibold text-[var(--indigo)]">{exp.company}</p>
-                  </div>
-                  <span class="font-mono-label shrink-0 rounded-full border border-[var(--glass-border)] bg-[color-mix(in_srgb,var(--indigo)_10%,transparent)] px-3 py-1 text-[var(--text-muted)]">
-                    {exp.dateRange}
-                  </span>
+        <div class="space-y-8">
+          {siteConfig.experience.map((exp, i) => {
+            const accent = companyAccents[i % companyAccents.length];
+            return (
+              <article
+                class={`reveal relative md:pl-14 ${i % 2 === 0 ? "reveal-left" : "reveal-right"}`}
+                data-reveal-delay={`${i * 100}`}
+              >
+                {/* Timeline dot — pulsing */}
+                <div
+                  class="absolute left-3 top-6 hidden -translate-x-1/2 md:flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  <span
+                    class="absolute h-6 w-6 rounded-full opacity-30 timeline-dot-pulse"
+                    style={`background: ${accent.color};`}
+                  ></span>
+                  <span
+                    class="relative h-4 w-4 rounded-full border-2 border-[var(--bg)]"
+                    style={`background: linear-gradient(135deg, ${accent.color}, var(--teal)); box-shadow: 0 0 0 3px color-mix(in srgb, ${accent.color} 20%, transparent), 0 0 16px -4px ${accent.glow}`}
+                  ></span>
                 </div>
 
-                <ul class="mt-5 space-y-2.5">
-                  {exp.bullets.map((bullet) => (
-                    <li class="flex gap-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
-                      <span
-                        class="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full"
-                        style="background: var(--indigo)"
-                        aria-hidden="true"
-                      />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          ))}
+                {/* Card */}
+                <div class="exp-card glass-panel rounded-[var(--radius-card)] p-6 sm:p-7 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg">
+                  <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <h3 class="text-lg font-bold tracking-tight text-[var(--text)] sm:text-xl">
+                        {exp.title}
+                      </h3>
+                      <p class="mt-1 text-sm font-semibold" style={`color: ${accent.color}`}>{exp.company}</p>
+                    </div>
+                    <span
+                      class="font-mono-label shrink-0 rounded-full border px-3 py-1 text-[var(--text-muted)]"
+                      style={`border-color: color-mix(in srgb, ${accent.color} 30%, transparent); background: color-mix(in srgb, ${accent.color} 8%, transparent);`}
+                    >
+                      {exp.dateRange}
+                    </span>
+                  </div>
+
+                  <ul class="mt-5 space-y-2.5">
+                    {exp.bullets.map((bullet) => (
+                      <li class="flex gap-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
+                        <span
+                          class="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={`background: ${accent.color}`}
+                          aria-hidden="true"
+                        />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </div>
   </section>
 )}
+
+<style>
+  @keyframes dot-pulse {
+    0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.3; }
+    50%       { transform: translate(-50%, 0) scale(1.8); opacity: 0; }
+  }
+  .timeline-dot-pulse {
+    animation: dot-pulse 2.4s ease-in-out infinite;
+    transform-origin: center;
+  }
+</style>
 
 <script>
   // Draw the timeline gradient line when the section enters viewport

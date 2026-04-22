@@ -4,24 +4,46 @@ import SplitText from "./ui/SplitText";
 import BlurText from "./ui/BlurText";
 import MagneticButton from "./ui/MagneticButton";
 import CountUp from "./ui/CountUp";
-import PortfolioGlobe from "./react/PortfolioGlobe";
 ---
 
 <section
   id="hero"
   class="relative isolate flex min-h-[100dvh] flex-col justify-center overflow-hidden px-4 pb-24 pt-28 sm:px-6 sm:pt-32"
 >
-  {/* Mesh gradient underlay — complements the aurora */}
+  {/* Noise texture overlay */}
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 -z-10 opacity-[0.025]"
+    style="background-image: url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"); background-size: 200px 200px;"
+  ></div>
+
+  {/* Mesh gradient underlay */}
   <div
     aria-hidden="true"
     class="pointer-events-none absolute inset-0 -z-10"
-    style="background: radial-gradient(900px circle at 18% 30%, color-mix(in srgb, var(--indigo) 14%, transparent), transparent 55%), radial-gradient(700px circle at 85% 15%, color-mix(in srgb, var(--teal) 10%, transparent), transparent 50%)"
+    style="background: radial-gradient(900px circle at 18% 30%, color-mix(in srgb, var(--indigo) 14%, transparent), transparent 55%), radial-gradient(700px circle at 85% 15%, color-mix(in srgb, var(--teal) 10%, transparent), transparent 50%), radial-gradient(600px circle at 55% 85%, color-mix(in srgb, var(--rose) 6%, transparent), transparent 50%)"
+  ></div>
+
+  {/* Dot grid */}
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background-image: radial-gradient(circle, color-mix(in srgb, var(--text) 10%, transparent) 1px, transparent 1px); background-size: 32px 32px;"
   ></div>
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-14 lg:flex-row lg:items-center lg:gap-16">
 
     {/* ── LEFT — Hero text ──────────────────────────────────────────────── */}
     <div class="flex-1">
+      {/* Availability pill */}
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--glass-border)] bg-[var(--glass)] px-4 py-1.5 backdrop-blur-xl shadow-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+        </span>
+        <span class="font-mono-label text-[var(--text-muted)]">Available for work · Warsaw</span>
+      </div>
+
       {/* Eyebrow label */}
       <p class="font-mono-label mb-5 text-[var(--text-muted)]">
         Portfolio · Burgos → Warsaw → the world
@@ -54,8 +76,8 @@ import PortfolioGlobe from "./react/PortfolioGlobe";
           </svg>
         </MagneticButton>
 
-        <MagneticButton client:load href="/blog" variant="outline" id="hero-cta-secondary">
-          Read the blog
+        <MagneticButton client:load href={`mailto:${siteConfig.social.email}`} variant="outline" id="hero-cta-contact">
+          Get in touch
         </MagneticButton>
 
         <MagneticButton client:load href="#konari" variant="ghost" id="hero-cta-konari">
@@ -108,38 +130,51 @@ import PortfolioGlobe from "./react/PortfolioGlobe";
       </div>
     </div>
 
-    {/* ── RIGHT — Cards + globe + floating badges ───────────────────────── */}
-    <div class="relative flex w-full shrink-0 flex-col gap-4 lg:w-[380px]">
+    {/* ── RIGHT — Terminal card + Stats ──────────────────────────────────── */}
+    <div class="relative flex w-full shrink-0 flex-col gap-4 lg:w-[400px]">
 
-      {/* Floating tech badges orbiting the right column */}
-      <div class="pointer-events-none absolute inset-0 -z-10 hidden lg:block" aria-hidden="true">
-        {[
-          { label: "Java",    style: "animation: badge-orbit-a 18s linear infinite; top: 50%; left: 50%;" },
-          { label: "Spring",  style: "animation: badge-orbit-b 22s linear infinite; top: 50%; left: 50%;" },
-          { label: "Docker",  style: "animation: badge-orbit-c 26s linear infinite; top: 50%; left: 50%;" },
-          { label: ".NET",    style: "animation: badge-orbit-d 20s linear infinite; top: 50%; left: 50%;" },
-        ].map(({ label, style }) => (
-          <span
-            class="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center rounded-full border border-[var(--glass-border)] bg-[var(--glass)] px-3 py-1 font-mono-label text-[var(--text)] backdrop-blur-xl shadow-sm"
-            style={style}
-          >
-            {label}
-          </span>
-        ))}
-      </div>
-
-      {/* Globe card */}
+      {/* Terminal card */}
       <div
-        class="reveal glass-panel overflow-hidden rounded-[var(--radius-card)] p-5 transition duration-500 hover:-translate-y-0.5"
+        class="reveal glass-panel overflow-hidden rounded-[var(--radius-card)] transition duration-500 hover:-translate-y-0.5"
         data-reveal-delay="200"
       >
-        <p class="font-mono-label text-[var(--text-muted)]">Where I build from</p>
-        <p class="mt-1.5 text-sm leading-relaxed text-[var(--text)]">
-          Home in <span class="font-semibold">Burgos</span>, current chapter in{" "}
-          <span class="font-semibold">Warsaw</span> — drag the globe.
-        </p>
-        <div class="mt-4">
-          <PortfolioGlobe client:visible />
+        {/* Terminal titlebar */}
+        <div class="flex items-center gap-2 border-b border-[var(--glass-border)] px-4 py-3">
+          <span class="h-3 w-3 rounded-full bg-rose-400/80"></span>
+          <span class="h-3 w-3 rounded-full bg-amber-400/80"></span>
+          <span class="h-3 w-3 rounded-full bg-emerald-400/80"></span>
+          <span class="ml-3 font-mono-label text-[var(--text-muted)]">marcos@portfolio ~ </span>
+        </div>
+
+        {/* Terminal body */}
+        <div class="space-y-2 p-5 font-mono text-sm">
+          <p class="text-[var(--text-muted)]"><span class="text-emerald-400">❯</span> whoami</p>
+          <p class="text-[var(--text)] pl-2">Marcos Lopez Ortego</p>
+          <p class="text-[var(--text)] pl-2 text-[var(--text-muted)]">Backend Developer · Nonprofit founder</p>
+
+          <p class="pt-1 text-[var(--text-muted)]"><span class="text-emerald-400">❯</span> cat stack.json</p>
+          <div class="pl-2 text-[var(--text-muted)]">
+            <p><span class="text-[var(--indigo)]">{`{`}</span></p>
+            <p class="pl-4"><span class="text-teal-400">"languages"</span>: <span class="text-amber-300">["Java", "C#", "Python"]</span>,</p>
+            <p class="pl-4"><span class="text-teal-400">"backend"</span>: <span class="text-amber-300">["Spring Boot", ".NET"]</span>,</p>
+            <p class="pl-4"><span class="text-teal-400">"platform"</span>: <span class="text-amber-300">["Docker", "Linux"]</span>,</p>
+            <p class="pl-4"><span class="text-teal-400">"location"</span>: <span class="text-emerald-300">"Warsaw, PL"</span></p>
+            <p><span class="text-[var(--indigo)]">{`}`}</span></p>
+          </div>
+
+          <p class="pt-1 text-[var(--text-muted)]">
+            <span class="text-emerald-400">❯</span> git log --oneline -1
+          </p>
+          <p class="pl-2 text-[var(--text-muted)]">
+            <span class="text-[var(--indigo)] font-bold" id="commit-hash">a3f9b12</span>
+            {" "}<span class="text-[var(--text)]">feat: shipped v2 of this portfolio</span>
+          </p>
+
+          {/* Blinking cursor line */}
+          <p class="text-[var(--text-muted)] pt-1">
+            <span class="text-emerald-400">❯</span>
+            <span class="ml-1 inline-block h-4 w-0.5 translate-y-0.5 bg-[var(--text)] terminal-cursor"></span>
+          </p>
         </div>
       </div>
 
@@ -148,11 +183,7 @@ import PortfolioGlobe from "./react/PortfolioGlobe";
         class="reveal glass-panel rounded-[var(--radius-card)] p-5 transition duration-500 hover:-translate-y-0.5"
         data-reveal-delay="280"
       >
-        <p class="font-mono-label text-[var(--text-muted)]">Now</p>
-        <p class="mt-2 text-sm leading-relaxed text-[var(--text)]">
-          Building calm backends, shipping tools, and growing{" "}
-          <span class="font-semibold">Konari</span>.
-        </p>
+        <p class="font-mono-label text-[var(--text-muted)]">At a glance</p>
         <div class="mt-4 grid grid-cols-3 gap-3 text-center">
           <div class="glass-chip rounded-2xl px-2 py-3">
             <p class="text-xl font-bold tabular-nums text-[var(--text)]">
@@ -162,16 +193,24 @@ import PortfolioGlobe from "./react/PortfolioGlobe";
           </div>
           <div class="glass-chip rounded-2xl px-2 py-3">
             <p class="text-xl font-bold tabular-nums text-[var(--text)]">
-              <CountUp client:visible target={1} />
+              <CountUp client:visible target={2} suffix="+" />
             </p>
-            <p class="mt-0.5 text-[11px] font-medium text-[var(--text-muted)]">Nonprofit</p>
+            <p class="mt-0.5 text-[11px] font-medium text-[var(--text-muted)]">Years exp.</p>
           </div>
           <div class="glass-chip rounded-2xl px-2 py-3">
             <p class="text-xl font-bold tabular-nums text-[var(--text)]">∞</p>
             <p class="mt-0.5 text-[11px] font-medium text-[var(--text-muted)]">Curiosity</p>
           </div>
         </div>
+
+        {/* Tech stack mini-tags */}
+        <div class="mt-4 flex flex-wrap gap-2">
+          {["Java", "Spring Boot", ".NET", "Docker", "Linux", "SQL"].map((t) => (
+            <span class="glass-chip rounded-full px-3 py-1 font-mono-label text-[var(--text)] text-[10px]">{t}</span>
+          ))}
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -195,3 +234,19 @@ import PortfolioGlobe from "./react/PortfolioGlobe";
     </svg>
   </div>
 </section>
+
+<style>
+  @keyframes terminal-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .terminal-cursor {
+    animation: terminal-blink 1.1s step-end infinite;
+  }
+  @keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+  .animate-ping {
+    animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+</style>

@@ -25,6 +25,60 @@ const socials = [
 ].filter(Boolean) as { label: string; href: string; icon: string; external?: boolean }[];
 ---
 
+{/* ── Let's work together CTA ─────────────────────────────────────────── */}
+<div class="relative overflow-hidden border-t border-[var(--border)] px-4 py-20 sm:px-6">
+  {/* Radial glow background */}
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0"
+    style="background: radial-gradient(ellipse 80% 50% at 50% 100%, color-mix(in srgb, var(--indigo) 12%, transparent), transparent 70%)"
+  ></div>
+
+  <div class="mx-auto max-w-6xl text-center">
+    <p class="font-mono-label text-[var(--indigo)]">Open to work</p>
+    <h2
+      class="mt-4 text-pretty text-4xl font-bold tracking-tight text-[var(--text)] sm:text-5xl md:text-6xl"
+      style="letter-spacing: -0.03em; line-height: 1.1"
+    >
+      Let's build something
+      <span class="gradient-text"> great together.</span>
+    </h2>
+    <p class="mx-auto mt-5 max-w-xl text-pretty text-lg leading-relaxed text-[var(--text-muted)]">
+      I'm available for backend roles, freelance projects, and Konari collaborations.
+      Drop me a line — I respond fast.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      {siteConfig.social?.email && (
+        <a
+          href={`mailto:${siteConfig.social.email}`}
+          class="cta-pulse inline-flex items-center gap-2.5 rounded-full bg-[var(--indigo)] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[var(--glow-indigo)] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[var(--glow-indigo)]"
+          data-interactive
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M3 7l9 6 9-6"/>
+          </svg>
+          Send an email
+        </a>
+      )}
+      {siteConfig.social?.linkedin && (
+        <a
+          href={siteConfig.social.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2.5 rounded-full border border-[var(--glass-border)] bg-[var(--glass)] px-8 py-3.5 text-sm font-semibold text-[var(--text)] backdrop-blur-md shadow-sm transition-all duration-300 hover:scale-105 hover:border-[var(--indigo)]"
+          data-interactive
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 11v5M8 8v.01M12 16v-5M16 16v-3a2 2 0 1 0-4 0M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/>
+          </svg>
+          Connect on LinkedIn
+        </a>
+      )}
+    </div>
+  </div>
+</div>
+
 <footer class="relative border-t border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_80%,transparent)] backdrop-blur-xl">
   <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
 
@@ -48,6 +102,15 @@ const socials = [
         <p class="text-sm leading-relaxed text-[var(--text-muted)]">
           Building reliable backends and meaningful products from Burgos, Spain — currently in Warsaw.
         </p>
+
+        {/* Availability badge */}
+        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping-slow rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+          </span>
+          <span class="font-mono-label text-emerald-400">Available for work</span>
+        </div>
 
         {/* ── macOS dock social links ─────────────────────────── */}
         <div
@@ -134,6 +197,15 @@ const socials = [
     </div>
   </div>
 </footer>
+
+<style>
+  @keyframes ping-slow {
+    75%, 100% { transform: scale(2.5); opacity: 0; }
+  }
+  .animate-ping-slow {
+    animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+</style>
 
 <script>
   // Copy-to-clipboard with tooltip feedback

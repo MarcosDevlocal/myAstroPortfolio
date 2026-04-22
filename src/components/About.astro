@@ -11,9 +11,6 @@ const paragraphs = siteConfig.aboutMe
 const skillNames = siteConfig.skills.map((s) =>
   typeof s === "string" ? s : s.name
 );
-
-// Words to highlight with gradient in the pull-quote
-const highlightWords = ["calm", "clear", "reliable", "trust", "compassion", "technology"];
 ---
 
 <section id="about" class="relative border-b border-[var(--border)] px-4 py-24 sm:px-6 sm:py-28">
@@ -32,8 +29,8 @@ const highlightWords = ["calm", "clear", "reliable", "trust", "compassion", "tec
     {/* ── Two-column layout ────────────────────────────────────────────── */}
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
 
-      {/* Left — large typographic pull-quote */}
-      <div class="reveal lg:col-span-5" data-reveal-delay="60">
+      {/* Left — pull-quote + live status cards */}
+      <div class="reveal lg:col-span-5 flex flex-col gap-5" data-reveal-delay="60">
         <blockquote
           class="text-pretty text-xl font-medium leading-relaxed text-[var(--text-muted)] sm:text-2xl"
           style="line-height: 1.65"
@@ -45,7 +42,7 @@ const highlightWords = ["calm", "clear", "reliable", "trust", "compassion", "tec
         </blockquote>
 
         {/* Gradient animated border profile detail */}
-        <div class="mt-8 gradient-border inline-flex items-center gap-3 rounded-2xl bg-[var(--bg-elevated)] px-4 py-3 shadow-md">
+        <div class="gradient-border inline-flex items-center gap-3 rounded-2xl bg-[var(--bg-elevated)] px-4 py-3 shadow-md">
           <div
             class="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold text-white shrink-0"
             style="background: linear-gradient(135deg, var(--indigo), var(--teal))"
@@ -56,6 +53,38 @@ const highlightWords = ["calm", "clear", "reliable", "trust", "compassion", "tec
             <p class="text-sm font-semibold text-[var(--text)]">{siteConfig.name}</p>
             <p class="font-mono-label text-[var(--text-muted)]">{siteConfig.title}</p>
           </div>
+        </div>
+
+        {/* Live status card */}
+        <div class="glass-panel rounded-2xl p-4 flex flex-col gap-3">
+          <p class="font-mono-label text-[var(--text-muted)]">Current status</p>
+          <div class="flex items-center gap-3">
+            <span class="relative flex h-2.5 w-2.5 shrink-0">
+              <span class="absolute inline-flex h-full w-full animate-ping-slow rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+            </span>
+            <span class="text-sm font-medium text-[var(--text)]">Working at HISZPANIA DE LUXE · Warsaw</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="flex h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--indigo)] opacity-70"></span>
+            <span class="text-sm text-[var(--text-muted)]">Building with Java · Spring Boot · .NET</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="flex h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--rose)] opacity-70"></span>
+            <span class="text-sm text-[var(--text-muted)]">Running Konari nonprofit</span>
+          </div>
+        </div>
+
+        {/* Location chips */}
+        <div class="flex flex-wrap gap-2">
+          {[
+            { label: "📍 Burgos → Warsaw" },
+            { label: "🌱 Open to opportunities" },
+          ].map(({ label }) => (
+            <span class="glass-chip rounded-full px-3.5 py-1.5 font-mono-label text-[var(--text)]">
+              {label}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -70,16 +99,21 @@ const highlightWords = ["calm", "clear", "reliable", "trust", "compassion", "tec
           </p>
         ))}
 
-        {/* Location + status chips */}
-        <div class="flex flex-wrap gap-2 pt-2">
+        {/* Separator */}
+        <div class="h-px bg-[var(--border)]"></div>
+
+        {/* Quick facts grid */}
+        <div class="grid grid-cols-2 gap-4">
           {[
-            { label: "📍 Burgos → Warsaw" },
-            { label: "⚡ Java · Spring Boot" },
-            { label: "🌱 Open to opportunities" },
-          ].map(({ label }) => (
-            <span class="glass-chip rounded-full px-3.5 py-1.5 font-mono-label text-[var(--text)]">
-              {label}
-            </span>
+            { label: "Based in", value: "Warsaw, Poland" },
+            { label: "From", value: "Burgos, Spain" },
+            { label: "Focus", value: "Backend engineering" },
+            { label: "Stack", value: "Java · Spring · .NET" },
+          ].map(({ label, value }) => (
+            <div>
+              <p class="font-mono-label text-[var(--text-muted)]">{label}</p>
+              <p class="mt-1 text-sm font-semibold text-[var(--text)]">{value}</p>
+            </div>
           ))}
         </div>
       </div>
@@ -96,3 +130,12 @@ const highlightWords = ["calm", "clear", "reliable", "trust", "compassion", "tec
     </div>
   </div>
 </section>
+
+<style>
+  @keyframes ping-slow {
+    75%, 100% { transform: scale(2.5); opacity: 0; }
+  }
+  .animate-ping-slow {
+    animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+</style>

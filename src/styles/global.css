@@ -686,3 +686,84 @@ body {
   letter-spacing: 0.12em;
   font-weight: 600;
 }
+
+/* ─── Skill chip glow on hover ───────────────────────────────────────────── */
+
+.glass-chip:hover {
+  box-shadow: 0 0 16px -4px var(--skill-glow, var(--glow-indigo));
+  border-color: color-mix(in srgb, var(--skill-glow, var(--indigo)) 40%, var(--border));
+}
+
+/* ─── CTA pulse button ───────────────────────────────────────────────────── */
+
+@keyframes cta-shine {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.cta-pulse {
+  background: linear-gradient(
+    90deg,
+    var(--indigo) 0%,
+    color-mix(in srgb, var(--indigo) 80%, var(--teal)) 40%,
+    var(--teal) 60%,
+    var(--indigo) 100%
+  );
+  background-size: 200% auto;
+  animation: cta-shine 3s linear infinite;
+}
+
+/* ─── Terminal font override ─────────────────────────────────────────────── */
+
+.terminal-font {
+  font-family: var(--font-mono);
+}
+
+/* ─── Shimmer skeleton ───────────────────────────────────────────────────── */
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    color-mix(in srgb, var(--text) 5%, var(--bg-elevated)) 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.2s ease-in-out infinite;
+}
+
+/* ─── Glass panel shimmer sheen on reveal ────────────────────────────────── */
+
+.exp-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--text) 4%, transparent),
+    transparent
+  );
+  border-radius: inherit;
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.exp-card:hover::before {
+  left: 150%;
+}
+
+/* ─── Section divider glow ───────────────────────────────────────────────── */
+
+section + section {
+  position: relative;
+}
+
