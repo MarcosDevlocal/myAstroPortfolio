@@ -4,32 +4,14 @@ import SplitText from "./ui/SplitText";
 import BlurText from "./ui/BlurText";
 import MagneticButton from "./ui/MagneticButton";
 import CountUp from "./ui/CountUp";
+import TiltCard from "./ui/TiltCard";
 ---
 
 <section
   id="hero"
   class="relative isolate flex min-h-[100dvh] flex-col justify-center overflow-hidden px-4 pb-24 pt-28 sm:px-6 sm:pt-32"
 >
-  {/* Noise texture overlay */}
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0 -z-10 opacity-[0.025]"
-    style="background-image: url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"); background-size: 200px 200px;"
-  ></div>
 
-  {/* Mesh gradient underlay */}
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0 -z-10"
-    style="background: radial-gradient(900px circle at 18% 30%, color-mix(in srgb, var(--indigo) 14%, transparent), transparent 55%), radial-gradient(700px circle at 85% 15%, color-mix(in srgb, var(--teal) 10%, transparent), transparent 50%), radial-gradient(600px circle at 55% 85%, color-mix(in srgb, var(--rose) 6%, transparent), transparent 50%)"
-  ></div>
-
-  {/* Dot grid */}
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0 -z-10"
-    style="background-image: radial-gradient(circle, color-mix(in srgb, var(--text) 10%, transparent) 1px, transparent 1px); background-size: 32px 32px;"
-  ></div>
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-14 lg:flex-row lg:items-center lg:gap-16">
 
@@ -54,8 +36,8 @@ import CountUp from "./ui/CountUp";
         client:load
         text={siteConfig.name}
         as="h1"
-        className="text-pretty font-bold text-[var(--text)]"
-        style={`font-size: clamp(3rem, 7vw, 6.5rem); letter-spacing: -0.04em; line-height: 1.05`}
+        className="text-pretty font-black text-[var(--text)] tracking-tighter"
+        style={`font-size: clamp(4rem, 12vw, 8rem); line-height: 0.95; margin-left: -0.05em;`}
       />
 
       {/* Animated subtitle — BlurText per-word */}
@@ -130,87 +112,33 @@ import CountUp from "./ui/CountUp";
       </div>
     </div>
 
-    {/* ── RIGHT — Terminal card + Stats ──────────────────────────────────── */}
-    <div class="relative flex w-full shrink-0 flex-col gap-4 lg:w-[400px]">
-
-      {/* Terminal card */}
-      <div
-        class="reveal glass-panel overflow-hidden rounded-[var(--radius-card)] transition duration-500 hover:-translate-y-0.5"
-        data-reveal-delay="200"
-      >
-        {/* Terminal titlebar */}
-        <div class="flex items-center gap-2 border-b border-[var(--glass-border)] px-4 py-3">
-          <span class="h-3 w-3 rounded-full bg-rose-400/80"></span>
-          <span class="h-3 w-3 rounded-full bg-amber-400/80"></span>
-          <span class="h-3 w-3 rounded-full bg-emerald-400/80"></span>
-          <span class="ml-3 font-mono-label text-[var(--text-muted)]">marcos@portfolio ~ </span>
-        </div>
-
-        {/* Terminal body */}
-        <div class="space-y-2 p-5 font-mono text-sm">
-          <p class="text-[var(--text-muted)]"><span class="text-emerald-400">❯</span> whoami</p>
-          <p class="text-[var(--text)] pl-2">Marcos Lopez Ortego</p>
-          <p class="text-[var(--text)] pl-2 text-[var(--text-muted)]">Backend Developer · Nonprofit founder</p>
-
-          <p class="pt-1 text-[var(--text-muted)]"><span class="text-emerald-400">❯</span> cat stack.json</p>
-          <div class="pl-2 text-[var(--text-muted)]">
-            <p><span class="text-[var(--indigo)]">{`{`}</span></p>
-            <p class="pl-4"><span class="text-teal-400">"languages"</span>: <span class="text-amber-300">["Java", "C#", "Python"]</span>,</p>
-            <p class="pl-4"><span class="text-teal-400">"backend"</span>: <span class="text-amber-300">["Spring Boot", ".NET"]</span>,</p>
-            <p class="pl-4"><span class="text-teal-400">"platform"</span>: <span class="text-amber-300">["Docker", "Linux"]</span>,</p>
-            <p class="pl-4"><span class="text-teal-400">"location"</span>: <span class="text-emerald-300">"Warsaw, PL"</span></p>
-            <p><span class="text-[var(--indigo)]">{`}`}</span></p>
-          </div>
-
-          <p class="pt-1 text-[var(--text-muted)]">
-            <span class="text-emerald-400">❯</span> git log --oneline -1
-          </p>
-          <p class="pl-2 text-[var(--text-muted)]">
-            <span class="text-[var(--indigo)] font-bold" id="commit-hash">a3f9b12</span>
-            {" "}<span class="text-[var(--text)]">feat: shipped v2 of this portfolio</span>
-          </p>
-
-          {/* Blinking cursor line */}
-          <p class="text-[var(--text-muted)] pt-1">
-            <span class="text-emerald-400">❯</span>
-            <span class="ml-1 inline-block h-4 w-0.5 translate-y-0.5 bg-[var(--text)] terminal-cursor"></span>
-          </p>
-        </div>
-      </div>
-
-      {/* Stats card */}
-      <div
-        class="reveal glass-panel rounded-[var(--radius-card)] p-5 transition duration-500 hover:-translate-y-0.5"
-        data-reveal-delay="280"
-      >
-        <p class="font-mono-label text-[var(--text-muted)]">At a glance</p>
-        <div class="mt-4 grid grid-cols-3 gap-3 text-center">
-          <div class="glass-chip rounded-2xl px-2 py-3">
-            <p class="text-xl font-bold tabular-nums text-[var(--text)]">
-              <CountUp client:visible target={3} suffix="+" />
-            </p>
-            <p class="mt-0.5 text-[11px] font-medium text-[var(--text-muted)]">Projects</p>
-          </div>
-          <div class="glass-chip rounded-2xl px-2 py-3">
-            <p class="text-xl font-bold tabular-nums text-[var(--text)]">
-              <CountUp client:visible target={2} suffix="+" />
-            </p>
-            <p class="mt-0.5 text-[11px] font-medium text-[var(--text-muted)]">Years exp.</p>
-          </div>
-          <div class="glass-chip rounded-2xl px-2 py-3">
-            <p class="text-xl font-bold tabular-nums text-[var(--text)]">∞</p>
-            <p class="mt-0.5 text-[11px] font-medium text-[var(--text-muted)]">Curiosity</p>
+    {/* ── RIGHT — Visual abstract / Image ──────────────────────────────────── */}
+    <div class="relative flex w-full shrink-0 flex-col items-center justify-center lg:w-[450px]">
+      <TiltCard client:load maxTilt={10} glowColor="rgba(99,102,241,0.25)">
+        <div class="relative w-full aspect-[4/5] overflow-hidden rounded-[2rem] border border-[var(--glass-border)] bg-[var(--glass)] shadow-2xl shadow-black/20 backdrop-blur-md">
+          {/* Subtle inner glow */}
+          <div class="absolute inset-0 z-10 shadow-[inset_0_0_40px_rgba(255,255,255,0.05)] rounded-[2rem] pointer-events-none"></div>
+          
+          <img 
+            src="/images/hero-shape.png" 
+            alt="Abstract design" 
+            class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-105"
+          />
+          
+          {/* Floating glass badge */}
+          <div class="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between rounded-2xl border border-[var(--glass-border)] bg-black/40 backdrop-blur-xl px-5 py-3 shadow-lg">
+            <div class="flex flex-col">
+              <span class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Experience</span>
+              <span class="text-xl font-bold text-white"><CountUp client:visible target={3} suffix="+" /> Years</span>
+            </div>
+            <div class="h-8 w-px bg-[var(--glass-border)]"></div>
+            <div class="flex flex-col text-right">
+              <span class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Projects</span>
+              <span class="text-xl font-bold text-white"><CountUp client:visible target={12} suffix="+" /> Shipped</span>
+            </div>
           </div>
         </div>
-
-        {/* Tech stack mini-tags */}
-        <div class="mt-4 flex flex-wrap gap-2">
-          {["Java", "Spring Boot", ".NET", "Docker", "Linux", "SQL"].map((t) => (
-            <span class="glass-chip rounded-full px-3 py-1 font-mono-label text-[var(--text)] text-[10px]">{t}</span>
-          ))}
-        </div>
-      </div>
-
+      </TiltCard>
     </div>
   </div>
 
