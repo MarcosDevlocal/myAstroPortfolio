@@ -2,22 +2,22 @@
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-	const posts = await getCollection("blog");
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: { post }
+	const projects = await getCollection("projects");
+	return projects.map((project) => ({
+		params: { slug: project.id },
+		props: { project }
 	}));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { project } = Astro.props;
+const { Content } = await render(project);
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<title>{post.data.title}</title>
+		<title>{project.data.name}</title>
 		<style>
 			body {
 				margin: 0;
@@ -52,9 +52,9 @@ const { Content } = await render(post);
 	<body>
 		<main class="wrap">
 			<a class="back" href="/">Back to portfolio</a>
-			<h1>{post.data.title}</h1>
-			<div class="meta">{post.data.date.toLocaleDateString("en-GB")}</div>
-			<p>{post.data.excerpt}</p>
+			<h1>{project.data.name}</h1>
+			<div class="meta">{project.data.type}</div>
+			<p>{project.data.description}</p>
 			<Content />
 		</main>
 	</body>

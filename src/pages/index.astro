@@ -1,33 +1,44 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/Header.astro";
-import Hero from "../components/Hero.astro";
-import Showcase from "../components/Showcase.astro";
-import About from "../components/About.astro";
-import Skills from "../components/Skills.astro";
-import Konari from "../components/Konari.astro";
-import Projects from "../components/Projects.astro";
-import Experience from "../components/Experience.astro";
-import Education from "../components/Education.astro";
-import Footer from "../components/Footer.astro";
-import { siteConfig } from "../config";
+import PortfolioApp from "../components/PortfolioApp.jsx";
+import { getCollection } from "astro:content";
+
+const projectEntries = (await getCollection("projects")).sort(
+	(a, b) => a.data.order - b.data.order
+);
+const blogEntries = (await getCollection("blog")).sort(
+	(a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const projects = projectEntries.map((entry) => ({
+	name: entry.data.name,
+	description: entry.data.description,
+	tech: entry.data.tech,
+	link: entry.data.link || `/projects/${entry.id}`,
+	type: entry.data.type
+}));
+
+const blogPosts = blogEntries.map((entry) => ({
+	title: entry.data.title,
+	excerpt: entry.data.excerpt,
+	date: entry.data.date.toLocaleDateString("en-GB", {
+		year: "numeric",
+		month: "short",
+		day: "2-digit"
+	}),
+	link: `/blog/${entry.id}`
+}));
 ---
 
-<BaseLayout
-  title={`${siteConfig.name} — ${siteConfig.title}`}
-  description={siteConfig.description}
-  accentColor={siteConfig.accentColor}
->
-  <Header />
-  <main>
-    <Hero />
-    <Showcase />
-    <About />
-    <Skills />
-    <Konari />
-    <Projects includeHeading={true} />
-    <Experience />
-    <Education />
-  </main>
-  <Footer />
-</BaseLayout>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Marcos Lopez Ortego | Portfolio</title>
+	</head>
+	<body>
+		<PortfolioApp client:load projects={projects} blogPosts={blogPosts} />
+	</body>
+</html>
