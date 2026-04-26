@@ -83,7 +83,7 @@ const portfolioData = {
       { name: "HTML5", slug: "html5" },
       { name: "CSS3", slug: "css3" },
       { name: "JavaScript", slug: "javascript" },
-      { name: "Power BI", slug: "powerbi" }
+      { name: "Power BI", slug: "microsoftpowerbi" }
     ],
     backend: [
       { name: "Java", slug: "openjdk" },
@@ -92,7 +92,7 @@ const portfolioData = {
       { name: "SAP", slug: "sap" }
     ],
     infrastructure: [
-      { name: "Windows Server", slug: "windows" },
+      { name: "Windows Server", slug: "windows11" },
       { name: "MySQL", slug: "mysql" },
       { name: "PostgreSQL", slug: "postgresql" }
     ],
@@ -222,16 +222,17 @@ export default function PortfolioApp({ projects = [], blogPosts = [] }) {
       .arrow-btn { width: 44px; height: 44px; border: 1.5px solid #0C0C0C; background: transparent; color: #0C0C0C; font-size: 22px; line-height: 1; }
       .arrow-btn:hover { background: #0C0C0C; color: #F9F9F7; transform: translate(-3px, -3px); box-shadow: 5px 5px 0px rgba(0,0,0,0.25); }
       .arrow-btn:active { transform: translate(-1px, -1px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
-      .stack-panel { background: linear-gradient(180deg, #FFFFFF, #f8f6f1); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 88px 0; }
-      .stack-layout { margin-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-      .stack-group { margin-top: 0; background: #FFFFFF; border: 1px solid var(--border); padding: 16px; min-height: 128px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-      .stack-group:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(12,12,12,0.06); }
-      .stack-note { margin-top: 7px; font-size: 13px; color: var(--ink-muted); }
-      .stack-icons { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
-      .tech-item { position: relative; width: 28px; height: 28px; }
-      .tech-item img { width: 28px; height: 28px; display: block; filter: grayscale(1); transition: transform 0.15s ease, filter 0.2s ease; }
-      .tech-item:hover img { transform: scale(1.12); filter: grayscale(0); }
-      .tech-tip { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%) translateY(4px); background: #0C0C0C; color: #F9F9F7; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 7px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease, transform 0.15s ease; }
+      .stack-panel { background: transparent; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 0; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+      .stack-carousel-wrap { width: 100%; position: relative; overflow: hidden; background: transparent; }
+      .stack-carousel-wrap::before, .stack-carousel-wrap::after { content: ""; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none; }
+      .stack-carousel-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+      .stack-carousel-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+      .stack-carousel-track { display: flex; align-items: center; justify-content: flex-start; width: max-content; will-change: transform; animation: carousel-scroll 32s linear infinite; }
+      @keyframes carousel-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      .tech-item { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 40px; cursor: default; flex-shrink: 0; }
+      .tech-item img { width: 68px; height: 68px; display: block; filter: grayscale(1) opacity(0.45); transition: transform 0.25s cubic-bezier(0.34,1.4,0.64,1), filter 0.25s ease; }
+      .tech-item:hover img { transform: scale(1.3) translateY(-5px); filter: grayscale(0) opacity(1); }
+      .tech-tip { position: absolute; left: 50%; top: calc(100% - 4px); transform: translateX(-50%) translateY(-4px); background: #0C0C0C; color: #F9F9F7; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease, transform 0.15s ease; }
       .tech-item:hover .tech-tip { opacity: 1; transform: translateX(-50%) translateY(0); }
       .blog-grid { margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
       .blog-item { position: relative; background: linear-gradient(180deg, #FFFFFF, #fcfbf7); border: 1px solid var(--border); padding: 24px; transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.18s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.2s ease; }
@@ -279,10 +280,10 @@ export default function PortfolioApp({ projects = [], blogPosts = [] }) {
         .project-card { padding: 24px; }
         .edu-card { padding: 20px; }
         .edu-program { font-size: 26px; }
-        .stack-panel { padding: 72px 0; }
-        .stack-layout { grid-template-columns: 1fr; gap: 16px; }
-        .stack-icons { gap: 16px; }
-        .tech-item, .tech-item img { width: 24px; height: 24px; }
+        .stack-panel { padding: 60px 0; }
+        .tech-item { padding: 22px 28px; }
+        .tech-item img { width: 48px; height: 48px; }
+        .stack-carousel-wrap::before, .stack-carousel-wrap::after { width: 60px; }
         .blog-grid { grid-template-columns: 1fr; }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -362,7 +363,6 @@ export default function PortfolioApp({ projects = [], blogPosts = [] }) {
     <div className="portfolio-root" ref={rootRef}>
       <header className="nav">
         <div className="container nav-row">
-          <div className="nav-initials">{portfolioData.initials}</div>
           <nav className="nav-links">
             {navItems.map((item) => (
               <button key={item.id} type="button" className="nav-link" style={{ border: 0, background: "transparent", cursor: "pointer" }} onClick={() => scrollToSection(item.id)}>
@@ -510,28 +510,32 @@ export default function PortfolioApp({ projects = [], blogPosts = [] }) {
       </section>
 
       <section className="stack-panel" id="stack">
-        <div className="container">
-          <h2 className="section-title reveal" data-reveal data-delay="0">Tech Stack</h2>
-          <div className="stack-layout">
-            {Object.entries(portfolioData.stack).map(([group, items], groupIndex) => (
-              <div className="stack-group reveal" data-reveal data-delay={groupIndex * 90} key={group}>
-                <div className="label">{group}</div>
-                <div className="stack-note">{stackNotes[group]}</div>
-                <div className="stack-icons">
-                  {items.map((tech) => (
-                    <div className="tech-item" key={tech.name}>
-                      <img
-                        src={getIconSrc(tech)}
-                        width="28"
-                        height="28"
-                        alt={tech.name}
-                        loading="lazy"
-                        onError={() => setIconFallbacks((prev) => ({ ...prev, [tech.slug]: true }))}
-                      />
-                      <span className="tech-tip">{tech.name}</span>
-                    </div>
-                  ))}
-                </div>
+        <div className="stack-carousel-wrap">
+          <div className="stack-carousel-track">
+            {Object.values(portfolioData.stack).flat().map((tech) => (
+              <div className="tech-item" key={`a-${tech.name}`}>
+                <img
+                  src={getIconSrc(tech)}
+                  width="68"
+                  height="68"
+                  alt={tech.name}
+                  loading="lazy"
+                  onError={() => setIconFallbacks((prev) => ({ ...prev, [tech.slug]: true }))}
+                />
+                <span className="tech-tip">{tech.name}</span>
+              </div>
+            ))}
+            {Object.values(portfolioData.stack).flat().map((tech) => (
+              <div className="tech-item" key={`b-${tech.name}`} aria-hidden="true">
+                <img
+                  src={getIconSrc(tech)}
+                  width="68"
+                  height="68"
+                  alt=""
+                  loading="lazy"
+                  onError={() => setIconFallbacks((prev) => ({ ...prev, [tech.slug]: true }))}
+                />
+                <span className="tech-tip">{tech.name}</span>
               </div>
             ))}
           </div>
